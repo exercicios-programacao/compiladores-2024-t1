@@ -155,7 +155,12 @@ def t_error(t):
     raise Exception(f"Caractere inválido '{t.value[0]}' na linha {t.lexer.lineno}, posição {t.lexpos}")
 
 
+@ply.lex.TOKEN(r"\n+")
+def t_ignore_newline(token):
+    """Conto o número de linhas."""
+    token.lexer.lineno += token.value.count("\n")
+
 # Criar o analisador léxico
 def lexer():
 # criar objeto analisador lexico 
-    return lex.lex()
+    return ply.lex.lex()
