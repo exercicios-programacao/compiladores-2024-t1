@@ -1,7 +1,5 @@
 import ply.lex as lex
-from errors import lexerExeption 
-
-
+from errors import LexerException
 # Lista de tokens
 tokens = (
     'ID',
@@ -138,24 +136,21 @@ def t_LIT_REAL(t):
     t.value = float(t.value)
     return t
 
-
 def t_LIT_STRING(t):
-    r'\".?\"|\'.?\''
-    t.value = t.value[1:-1]  # Remove as aspas
+    r'"."|\'.\''
+    t.value = t.value[1:-1] 
     return t
 
-
-# Ignorar espaços em branco e tabulações
 t_ignore = ' \t'
 
 
-# Rastrear o número da linha
+# Número da linha
 def t_newline(t):
     r'\n+'
     t.lexer.lineno += len(t.value)
 
 
-# Lidar com erros léxicos
+# erros léxicos
 def t_error(t):
     raise Exception(f"Caractere inválido '{t.value[0]}' na linha {t.lexer.lineno}, posição {t.lexpos}")
 
