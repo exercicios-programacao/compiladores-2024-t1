@@ -29,21 +29,21 @@ def step_check_token_count(context, quantidade):
 
 @then('o primeiro token deve ser "{valor}" com tipo "{tipo}"')
 def step_check_first_token(context, valor, tipo):
-    primeiro_token = context.tokens[0]  # Primeiro token na lista
-    assert primeiro_token["valor"] == valor, f"Esperado {valor}, mas recebeu {primeiro_token['valor']}"
+    primeiro_token = context.tokens[0]
+    assert str(primeiro_token["valor"]) == valor, f"Esperado {valor}, mas recebeu {str(primeiro_token['valor'])}"
     assert primeiro_token["tipo"] == tipo, f"Esperado {tipo}, mas recebeu {primeiro_token['tipo']}"
 
 @then('o segundo token deve ser "{valor}" com tipo "{tipo}"')
 def step_check_second_token(context, valor, tipo):
-    segundo_token = context.tokens[1]  # Segundo token na lista
-    assert segundo_token["valor"] == valor, f"Esperado {valor}, mas recebeu {segundo_token['valor']}"
+    segundo_token = context.tokens[1]
+    assert str(segundo_token["valor"]) == valor, f"Esperado {valor}, mas recebeu {str(segundo_token['valor'])}"
     assert segundo_token["tipo"] == tipo, f"Esperado {tipo}, mas recebeu {segundo_token['tipo']}"
 
 @then('o terceiro token deve ser "{valor}" com tipo "{tipo}"')
 def step_check_third_token(context, valor, tipo):
-    terceiro_token = context.tokens[2]  # Terceiro token na lista
-    assert terceiro_token["valor"] == valor, f"Esperado {valor}, mas recebeu {terceiro_token['valor']}"
-    assert terceiro_token ["tipo"] == tipo, f"Esperado {tipo}, mas recebeu {terceiro_token ['tipo']}"
+    terceiro_token = context.tokens[2]
+    assert str(terceiro_token["valor"]) == valor, f"Esperado {valor}, mas recebeu {str(terceiro_token['valor'])}"
+    assert terceiro_token["tipo"] == tipo, f"Esperado {tipo}, mas recebeu {terceiro_token['tipo']}"
 
 @then('o último token deve ser "{valor}" com tipo "{tipo}"')
 def step_check_last_token(context, valor, tipo):

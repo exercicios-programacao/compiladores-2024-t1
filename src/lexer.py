@@ -80,7 +80,7 @@ def t_LIT_INT(t):
     return t
 
 def t_LIT_REAL(t):
-    r'\d+\.\d+|\d+\.|\.\d+'
+    r'\d+\.\d+'
     t.value = float(t.value)
     return t
 
