@@ -1,5 +1,6 @@
 import ply.lex as lex
 from errors import LexerException
+
 # Lista de tokens
 tokens = (
     'ID',
@@ -58,12 +59,11 @@ tokens = (
     'COMMENT',
 )
 
-
 # Expressões regulares para tokens simples
 
 t_OP_ATRIB = r':='
 t_OP_SUM = r'[+-]'
-t_OP_MUL = r'[*\/divmod]'
+t_OP_MUL = r'[*\/mod]'  # Include 'mod' as a multiplication operator
 t_OP_REL = r'[=<>]+|\>=|\<='
 t_OP_LOGIC = r'and|or|not'
 t_OP_RANGE = r'\.\.'
@@ -76,10 +76,8 @@ t_OP_EOC = r';'
 t_OP_PERIOD = r'\.'
 t_OP_COLON = r':'
 
-
 # Palavras reservadas e identificadores
-
-reservada = {
+reserved = {
     'program': 'DIR_PROGRAM',
     'var': 'DIR_VAR',
     'procedure': 'DIR_PROC',
@@ -87,7 +85,8 @@ reservada = {
     'begin': 'DIR_BEGIN',
     'end': 'DIR_END',
     'type': 'DIR_TYPE',
-    'of': 'DIR_OF','const': 'DIR_CONST',
+    'of': 'DIR_OF',
+    'const': 'DIR_CONST',
     'with': 'DIR_WITH',
     'if': 'STMT_IF',
     'then': 'STMT_THEN',
@@ -117,13 +116,11 @@ reservada = {
     '//': 'COMMENT',
 }
 
-
 # Expressão regular para identificadores
 def t_ID(t):
     r'[a-zA-Z_][a-zA-Z0-9_]*'
-    t.type = reservada.get(t.value.lower(), 'ID')
+    t.type = reserved.get(t.value.lower(), 'ID')
     return t
-
 
 # Expressões regulares para literais
 def t_LIT_INT(t):
@@ -137,30 +134,21 @@ def t_LIT_REAL(t):
     return t
 
 def t_LIT_STRING(t):
-    r'"."|\'.\''
-    t.value = t.value[1:-1] 
+    r'"[^"]*"|\'[^\']*\''
+    t.value = t.value[1:-1]
     return t
 
 t_ignore = ' \t'
-
 
 # Número da linha
 def t_newline(t):
     r'\n+'
     t.lexer.lineno += len(t.value)
 
-
 # erros léxicos
 def t_error(t):
-    raise Exception(f"Caractere inválido '{t.value[0]}' na linha {t.lexer.lineno}, posição {t.lexpos}")
-
-
-@ply.lex.TOKEN(r"\n+")
-def t_ignore_newline(token):
-    """Conto o número de linhas."""
-    token.lexer.lineno += token.value.count("\n")
+    raise LexerException(f"Caractere inválido '{t.value[0]}' na linha {t.lexer.lineno}, posição {t.lexpos}")
 
 # Criar o analisador léxico
 def lexer():
-# criar objeto analisador lexico 
-    return ply.lex.lex()
+    return lex.lex()
