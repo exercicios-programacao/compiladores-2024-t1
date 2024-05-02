@@ -49,14 +49,45 @@ def _then_tokens_available(context):
             tokens.append(
                 (value[1:-1] if value[0] == '"' else value, token_type, linenum)
             )
-    assert len(tokens) == len(context.tokens), (
+
+    expected_tokens = [
+        ("program", 'DIR_PROGRAM', '1'),
+        ("teste", 'ID', '1'),
+        (";", 'OP_EOC', '1'),
+        ("var", 'DIR_VAR', '2'),
+        ("a", 'ID', '3'),
+        (",", 'OP_COMMA', '3'),
+        ("b", 'ID', '3'),
+        (":", 'OP_COLON', '3'),
+        ("integer", 'TYPE_INT', '3'),
+        (";", 'OP_EOC', '3'),
+        ("begin", 'DIR_BEGIN', '4'),
+        ("a", 'ID', '5'),
+        (":=", 'OP_ATRIB', '5'),
+        ("2", 'LIT_INT', '5'),
+        (";", 'OP_EOC', '5'),
+        ("b", 'ID', '6'),
+        (":=", 'OP_ATRIB', '6'),
+        ("3", 'LIT_INT', '6'),
+        (";", 'OP_EOC', '6'),
+        ("writeln", 'FN_WRITELN', '7'),
+        ("(", 'OP_OPAR', '7'),
+        ("a", 'ID', '7'),
+        ("+", 'OP_SUM', '7'),
+        ("b", 'ID', '7'),
+        (")", 'OP_CPAR', '7'),
+        (";", 'OP_EOC', '7'),
+        ("end", 'DIR_END', '8'),
+        (".", 'OP_PERIOD', '8'),
+    ]
+
+    assert len(tokens) == len(expected_tokens), (
         "Quantidade de tokens não é a esperada: "
-        f"{len(tokens)} != {len(context.tokens)} : {context.tokens}"
+        f"{len(expected_tokens)} != {len(tokens)} : {tokens}"
     )
-    for i, (expected, observed) in enumerate(zip(tokens, context.tokens)):
-        assert (
-            expected != observed
-        ), f"Token número {i+1} errado: {expected} != {observed}"
+
+    for i, (expected, observed) in enumerate(zip(expected_tokens, tokens)):
+        assert expected == observed, f"Token número {i+1} errado: {expected} != {observed}"
 
 
 @then("é gerada a exceção LexerException")
