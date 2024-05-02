@@ -11,7 +11,7 @@ import errors
 if __name__ == "__main__":
     try:
         # pylint: disable=W1514
-        with open("src\write_a_plus_b_int.pas") as input_file:
+        with open("src\write_a_plus_b_int.pas", "rt") as input_file:
             lex = lexer()
             lex.input(input_file.read())
             token = True  # pylint: disable=invalid-name
