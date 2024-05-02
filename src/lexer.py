@@ -138,8 +138,6 @@ def t_LIT_STRING(t):
     t.value = t.value[1:-1]
     return t
 
-t_ignore = ' \t'
-
 # Número da linha
 def t_newline(t):
     r'\n+'
@@ -152,3 +150,16 @@ def t_error(t):
 # Criar o analisador léxico
 def lexer():
     return lex.lex()
+
+def t_ignore_newline(token):
+    r"""\n+"""
+    token.lexer.lineno += token.value.count("\n")
+t_ignore = ' \t'
+
+def t_comment(t):
+    r"""\{.*?\}|\(\*(.|\n)*?\*\)"""
+
+def find_column(input_text, token_position):
+    """Encontra a coluna do token com erro."""
+    line_start = input_text.rfind('\n', 0, token_position) + 1
+    return token_position - line_start
